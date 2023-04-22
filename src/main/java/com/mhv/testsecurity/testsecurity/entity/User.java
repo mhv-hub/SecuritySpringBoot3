@@ -1,27 +1,45 @@
 package com.mhv.testsecurity.testsecurity.entity;
 
-import jakarta.persistence.Entity;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int userId;
+
+    @Column(length = 30)
     String userName;
+
+    @Column(unique = true, length = 15)
+    String userUserName;
+
+    @Column(length = 100)
+    String userPassword;
+
+    @Column(length = 15)
     String userRole;
+
     boolean userPasswordNonExpired;
     boolean userAccountNonLocked;
     boolean userAccountNonExpired;
     boolean userEnabled;
 
-    public User(int userId, String userName, String userRole, boolean userPasswordNonExpired, boolean userAccountNonLocked, boolean userAccountNonExpired, boolean userEnabled) {
+    public User() {
+    }
+
+    public User(int userId, String userName, String userUserName, String userPassword, String userRole, boolean userPasswordNonExpired, boolean userAccountNonLocked, boolean userAccountNonExpired, boolean userEnabled) {
         this.userId = userId;
         this.userName = userName;
+        this.userUserName = userUserName;
         this.userRole = userRole;
         this.userPasswordNonExpired = userPasswordNonExpired;
         this.userAccountNonLocked = userAccountNonLocked;
         this.userAccountNonExpired = userAccountNonExpired;
         this.userEnabled = userEnabled;
+        this.userPassword = userPassword;
     }
 
     public int getUserId() {
@@ -40,12 +58,28 @@ public class User {
         this.userName = userName;
     }
 
+    public String getUserUserName() {
+        return userUserName;
+    }
+
+    public void setUserUserName(String userUserName) {
+        this.userUserName = userUserName;
+    }
+
     public String getUserRole() {
         return userRole;
     }
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public boolean isUserPasswordNonExpired() {
@@ -85,6 +119,7 @@ public class User {
         return "User{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
+                ", userUserName='" + userUserName + '\'' +
                 ", userRole='" + userRole + '\'' +
                 ", userPasswordNonExpired=" + userPasswordNonExpired +
                 ", userAccountNonLocked=" + userAccountNonLocked +
