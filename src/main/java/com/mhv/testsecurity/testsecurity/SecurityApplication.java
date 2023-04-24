@@ -1,5 +1,6 @@
 package com.mhv.testsecurity.testsecurity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mhv.testsecurity.testsecurity.config.CustomUserDetailsService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,11 @@ public class SecurityApplication {
 	@Bean
 	public CustomUserDetailsService customUserDetailsService(){
 		return new CustomUserDetailsService();
+	}
+
+	@Bean
+	public ObjectMapper objectMapper(){
+		return new ObjectMapper();
 	}
 
 }

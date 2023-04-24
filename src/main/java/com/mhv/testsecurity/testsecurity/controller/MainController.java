@@ -7,6 +7,7 @@ import com.mhv.testsecurity.testsecurity.model.AuthenticationResponse;
 import com.mhv.testsecurity.testsecurity.service.UserService;
 import com.mhv.testsecurity.testsecurity.util.TokenUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -70,7 +71,7 @@ public class MainController {
     }
 
     @PostMapping("/public/authenticate")
-    public String authenticateAndCreateToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+    public ResponseEntity<AuthenticationResponse> authenticateAndCreateToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
         Authentication authenticate = null;
         try {
             authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
@@ -81,10 +82,10 @@ public class MainController {
             if(authenticate != null && authenticate.isAuthenticated()) {
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
                 String token = tokenUtility.generateToken(userDetails);
-                return token;
+                return new ResponseEntity<>(new AuthenticationResponse(token), HttpStatusCode.valueOf(200));
             }
             else{
-                return "User name or password is incorrect !!";
+                return new ResponseEntity<>(new AuthenticationResponse("Username or password incorrect !!"), HttpStatusCode.valueOf(403));
             }
         }
     }
